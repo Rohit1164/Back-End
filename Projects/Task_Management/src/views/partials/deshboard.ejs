@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Dashboard</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <%- include('partials/header', { user: user }) %>
+
+    <% user.forEach(u=> { %>
+      <div class="card col" style="width: 20rem;">
+        <div class="card-body">
+          <h2 class="card-title">
+            <%= u.username %>
+          </h2>
+        </div>
+      </div>
+      <% }) %>
+
+        <main class="p-6">
+          <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
+          <p>This is a protected page. Only visible to logged-in users.</p>
+        </main>
+
+        <%- include('partials/footer') %>
+
+</body>
+
+</html>

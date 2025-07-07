@@ -1,0 +1,18 @@
+<script src="https://cdn.tailwindcss.com"></script>
+<header class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">My App</h1>
+
+  <% if (locals.user) { %>
+    <div class="flex items-center space-x-4">
+      <span>Welcome, <%= user.username %> 👋</span>
+      <form action="/logout" method="POST">
+        <button class="bg-white text-blue-600 px-3 py-1 rounded">Logout</button>
+      </form>
+    </div>
+    <% } else { %>
+      <div class="space-x-4">
+        <a href="/login" class="hover:underline">Login</a>
+        <a href="/register" class="hover:underline">Register</a>
+      </div>
+      <% } %>
+</header>
