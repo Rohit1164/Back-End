@@ -32,7 +32,7 @@ export const registerUser = async (req, res) => {
 
   try {
     const user = await User.create({ username, email, password });
-    res.redirect("/login");
+    res.redirect("/users/login");
     res.status(201).json({
       message: "User registered successfully",
       user,
@@ -52,25 +52,22 @@ export const loginUser = async (req, res) => {
   }
 
   try {
-    // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
-    // Check password
+    if (!user)
+      return res.status(401).json({ message: "Invalid email or password" });
+
     const isMatch = await user.isPasswordCorrect(password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
 
-    // Generate tokens
     const { accessToken, refreshToken } = generateAccessAndRefreshToken(
       user._id
     );
-    // console.log("Access token", accessToken, "Refresh token", refreshToken);
     const loggedInUser = await User.findById(user._id).select(
       "-password -refreshToken"
     );
 
-    console.log(loggedInUser);
     const options = {
       httpOnly: true,
       secure: false,
@@ -96,9 +93,16 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const logout = async (params) => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
-  res.clearCookie("userData");
-  res.redirect("/");
+export const logout = async (req, res) => {
+  return res
+    .clearCookie("accessToken")
+    .clearCookie("refreshToken")
+    .clearCookie("userData")
+    .json(
+      new ApiResponse(
+        200,
+
+        "User logged out In Successfully"
+      )
+    );
 };

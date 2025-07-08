@@ -3,21 +3,22 @@
 
 <head>
   <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
   <%- include('partials/header', { user: user }) %>
 
-    <% user.forEach(u=> { %>
+    <% if (user) { %>
       <div class="card col" style="width: 20rem;">
         <div class="card-body">
-          <h2 class="card-title">
-            <%= u.username %>
+          <h2 class="card-title text-xl font-semibold">
+            <%= user.username %>
           </h2>
         </div>
       </div>
-      <% }) %>
+      <% } %>
 
         <main class="p-6">
           <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
