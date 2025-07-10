@@ -1,6 +1,6 @@
 import { User } from "../models/Users.models.js";
 import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+// import { ApiResponse } from "../utils/ApiResponse.js";
 
 const generateAccessAndRefreshToken = async (userID) => {
   try {
@@ -29,7 +29,6 @@ export const registerUser = async (req, res) => {
   if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
-
   try {
     const user = await User.create({ username, email, password });
     res.redirect("/users/login");
@@ -73,36 +72,58 @@ export const loginUser = async (req, res) => {
       secure: false,
     };
 
+    req.session.user = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .json(
-        new ApiResponse(
-          200,
-          {
-            user: loggedInUser,
-            accessToken,
-            refreshToken,
-          },
-          "User logged In Successfully"
-        )
-      );
+      .redirect("/task");
+    // .json(
+    //   new ApiResponse(
+    //     200,
+    //     {
+    //       user: loggedInUser,
+    //       accessToken,
+    //       refreshToken,
+    //     },
+    //     "User logged In Successfully"
+    //   )
+    // )
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 export const logout = async (req, res) => {
-  return res
-    .clearCookie("accessToken")
-    .clearCookie("refreshToken")
-    .clearCookie("userData")
-    .json(
-      new ApiResponse(
-        200,
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Session destruction error:", err);
+        return res.status(500).json({ message: "Logout failed", error: err });
+      }
 
-        "User logged out In Successfully"
-      )
-    );
+      res
+        .clearCookie("connect.sid")
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken")
+        .clearCookie("userData")
+        .redirect("/users/login");
+      //   .json(
+      //     new ApiResponse(
+      //       200,
+      //       "User logged out In Successfully"
+      //     )
+      //   );
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
 };

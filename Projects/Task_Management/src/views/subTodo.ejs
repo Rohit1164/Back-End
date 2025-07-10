@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>SubTodos Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-950 ">
+
+  <div class="max-w-3xl mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-6 text-center">SubTodo Dashboard</h1>
+
+    <!-- Create SubTodo Form -->
+    <form action="/subtodos" method="POST" class="mb-8 bg-white p-4 rounded shadow">
+      <div class="mb-4">
+        <label for="title" class="block text-sm font-medium">Title</label>
+        <input type="text" name="title" id="title" required class="w-full p-2 border border-gray-300 rounded" />
+      </div>
+      <input type="hidden" name="createdBy" value="<%= user?._id %>" />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add SubTodo</button>
+    </form>
+
+    <!-- Display SubTodos -->
+    <% if (subTodos && subTodos.length> 0) { %>
+      <ul class="space-y-4">
+        <% subTodos.forEach((todo)=> { %>
+          <li class="bg-white p-4 rounded shadow flex justify-between items-center">
+            <span>
+              <%= todo.title %> -
+                <%= todo.createdBy?.name || "Unknown User" %>
+                  (<%= todo.createdBy?.email || "No Email" %>)
+            </span>
+            <div class="space-x-2">
+              <form action="/subtodos/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline;">
+                <button class="text-red-500 hover:underline">Delete</button>
+              </form>
+              <a href="/subtodos/edit/<%= todo._id %>" class="text-blue-500 hover:underline">Edit</a>
+            </div>
+          </li>
+          <% }) %>
+      </ul>
+      <% } else { %>
+        <p class="text-center text-gray-600">No SubTodos found.</p>
+        <% } %>
+  </div>
+
+</body>
+
+</html>

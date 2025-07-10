@@ -3,34 +3,55 @@ import { Todo } from "../models/Todo.models.js";
 //Create a new Todo
 export const createTodo = async (req, res) => {
   try {
-    const { title, createdBy, description, dueDate, priority } = req.body;
+    const { title, description, dueDate, priority } = req.body;
+    const createdBy = req.session.user?._id;
 
-    if (!title || !createdBy || !description || !priority) {
+    if (!title || !description || !priority) {
       return res
         .status(400)
-        .json({ message: "Title , description and createdBy are required" });
+        .send("Title, description and priority are required");
     }
 
-    const todo = await Todo.create({
+    await Todo.create({
       title,
-      createdBy,
       description,
       priority,
       dueDate,
+      createdBy,
     });
-    res.status(201).json({ todo, complete: true });
+
+    res.redirect("/task");
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).send("Server error: " + error.message);
   }
 };
 
 //Get all Todos
 export const getTodos = async (req, res) => {
   try {
-    const todos = await Todo.find().populate("createdBy").populate("subTodos");
-    res.status(200).json(todos);
+    const user = req.session?.user;
+
+    if (!user || !user._id) {
+      return res.status(401).render("todos", {
+        message: "Please log in to view your tasks",
+        todos: [],
+      });
+    }
+
+    const todos = await Todo.find({ createdBy: user._id })
+      .populate("createdBy", "username email")
+      .populate("subTodos");
+
+    return res.status(200).render("todos", {
+      todos,
+      message: null,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Error fetching todos:", error);
+    return res.status(500).render("todos", {
+      message: "Server error: " + error.message,
+      todos: [],
+    });
   }
 };
 
@@ -43,7 +64,7 @@ export const getTodo = async (req, res) => {
 
     if (!todo) return res.status(404).json({ message: "Todo not found" });
 
-    res.status(200).json(todo);
+    res.status(200).render("todo", { todo });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -81,4 +102,8 @@ export const deleteTodo = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
+};
+
+export const renderCreateTodoForm = (req, res) => {
+  res.render("createTodo");
 };

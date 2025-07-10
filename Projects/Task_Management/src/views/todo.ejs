@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= todo.title %>
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-950 ">
+  <%- include('partials/header') %>
+    <div class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center py-10">
+      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+        <h1 class="text-3xl font-bold text-blue-700 mb-4">
+          <%= todo.title %>
+        </h1>
+
+        <p class="text-lg mb-2">
+          <strong class="text-gray-600">Description:</strong>
+          <span class="text-gray-800">
+            <%= todo.description %>
+          </span>
+        </p>
+
+        <p class="text-lg mb-2">
+          <strong class="text-gray-600">Priority:</strong>
+          <span class="text-gray-800">
+            <%= todo.priority %>
+          </span>
+        </p>
+
+        <p class="text-lg mb-4">
+          <strong class="text-gray-600">Created By:</strong>
+          <span class="text-gray-800">
+            <%= todo.createdBy.name || 'N/A' %>
+          </span>
+        </p>
+
+        <a href="/task" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+          ← Back to All Todos
+        </a>
+      </div>
+    </div>
+    <%- include('partials/footer') %>
+</body>
+
+</html>
