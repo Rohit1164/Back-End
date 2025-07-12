@@ -49,7 +49,7 @@ userSchema.methods.generateAccessToken = function () {
 };
 
 userSchema.methods.generateRefreshToken = function () {
-  JWT.sign({ _id: this._id }, process.env.REFRESH_TOKEN, {
+  return JWT.sign({ _id: this._id }, process.env.REFRESH_TOKEN, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
 };

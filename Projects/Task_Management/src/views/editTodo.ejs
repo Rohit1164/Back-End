@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Edit Todo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900 min-h-screen flex flex-col">
+
+  <%- include('partials/header') %>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+      <div class="bg-white shadow-2xl rounded-2xl w-full max-w-lg p-8 border border-gray-200">
+        <h1 class="text-3xl font-semibold text-center text-indigo-600 mb-6">
+          ✏️ Edit Your Todo
+        </h1>
+        <form action="/task/update/<%= todo._id %>" method="POST" class="space-y-6">
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700">Title</label>
+            <input type="text" name="title" value="<%= todo.title %>"
+              class="w-full p-3 rounded-lg bg-gray-100 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none"
+              required />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700">Description</label>
+            <textarea name="description" rows="3"
+              class="w-full p-3 rounded-lg bg-gray-100 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
+              required><%= todo.description %></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700">Complete</label>
+            <select name="complete"
+              class="w-full p-3 rounded-lg bg-gray-100 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="false" <%=!todo.complete ? "selected" : "" %>>❌ No</option>
+              <option value="true" <%=todo.complete ? "selected" : "" %>>✅ Yes</option>
+            </select>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-between gap-4">
+            <a href="/task"
+              class="w-1/2 text-center bg-gray-300 hover:bg-gray-400 text-gray-900 font-medium py-2 px-4 rounded-lg transition-all duration-200">
+              Cancel
+            </a>
+            <button type="submit"
+              class="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200">
+              Save Changes
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+
+</html>

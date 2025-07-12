@@ -7,10 +7,6 @@ import {
 
 const router = Router();
 
-router.route("/").get((req, res) => {
-  res.send("Well come");
-});
-
 router.get("/register", (req, res) => {
   res.render("register");
 });
@@ -21,6 +17,6 @@ router.get("/login", (req, res) => {
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 export default router;

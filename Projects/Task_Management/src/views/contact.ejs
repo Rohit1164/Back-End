@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Us</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    setTimeout(() => {
+      const alert = document.getElementById("alert-success");
+      if (alert) alert.style.display = "none";
+    }, 5000);
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+</head>
+
+<body class=" bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900">
+  <%- include('partials/header') %>
+
+    <div class="flex items-center justify-center p-5">
+      <div class="shadow-lg rounded-2xl p-10 max-w-4xl w-full bg-white">
+        <h2 class="text-4xl font-bold text-center mb-6">Contact Us</h2>
+
+        <% if (successMessage) { %>
+          <div id="alert-success" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
+            <p>
+              <%= successMessage %>
+            </p>
+          </div>
+          <% } %>
+
+            <div class="grid md:grid-cols-2 gap-8">
+              <!-- Contact Form -->
+              <form action="/contact" method="POST" class="p-6 rounded-lg shadow-md bg-gray-50">
+                <div class="mb-4">
+                  <label class="block font-semibold mb-2">Full Name</label>
+                  <input name="to_email" type="text" required
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    placeholder="Your Name" />
+                </div>
+
+                <div class="mb-4">
+                  <label class="block font-semibold mb-2">Email Address</label>
+                  <input name="from_email" type="email" required
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    placeholder="Your Email" />
+                </div>
+
+                <div class="mb-4">
+                  <label class="block font-semibold mb-2">Message</label>
+                  <textarea name="message" rows="4" required
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    placeholder="Your Message"></textarea>
+                </div>
+
+                <button type="submit"
+                  class="w-full bg-indigo-600 text-white py-3 px-6 rounded-xl hover:bg-indigo-700 transition">
+                  Submit
+                </button>
+              </form>
+
+              <!-- Contact Info -->
+              <div class="flex flex-col gap-6 m-6">
+                <div class="flex items-center space-x-4">
+                  <i class="fas fa-map-marker-alt text-3xl text-indigo-800"></i>
+                  <div>
+                    <h3 class="text-lg font-semibold">Our Address</h3>
+                    <p class="text-gray-700">Buland Shahar</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                  <i class="fas fa-envelope text-3xl text-indigo-800"></i>
+                  <div>
+                    <h3 class="text-lg font-semibold">Email Us</h3>
+                    <p class="text-gray-700">mrrohit1164@gmail.com</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                  <i class="fas fa-phone text-3xl text-indigo-800"></i>
+                  <div>
+                    <h3 class="text-lg font-semibold">Call Us</h3>
+                    <p class="text-gray-700">+91 902-773-7557</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+    <%- include('partials/footer') %>
+</body>
+
+</html>

@@ -7,44 +7,67 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-950 ">
+<body class="bg-gray-950 text-white font-sans min-h-screen flex flex-col">
 
-  <div class="max-w-3xl mx-auto mt-10">
-    <h1 class="text-3xl font-bold mb-6 text-center">SubTodo Dashboard</h1>
+  <%- include('partials/header') %>
 
-    <!-- Create SubTodo Form -->
-    <form action="/subtodos" method="POST" class="mb-8 bg-white p-4 rounded shadow">
-      <div class="mb-4">
-        <label for="title" class="block text-sm font-medium">Title</label>
-        <input type="text" name="title" id="title" required class="w-full p-2 border border-gray-300 rounded" />
-      </div>
-      <input type="hidden" name="createdBy" value="<%= user?._id %>" />
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add SubTodo</button>
-    </form>
+    <main class="flex-grow container mx-auto px-4 py-10 max-w-3xl">
+      <!-- ✅ Create SubTodo Form -->
+      <section class="bg-gray-800 p-6 rounded-xl shadow-lg mb-8">
+        <h2 class="text-xl font-semibold mb-4 text-white">Create New SubTodo</h2>
+        <form action="/subTask" method="POST" class="space-y-4">
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-300">Title</label>
+            <input type="text" name="title" id="title" required
+              class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-900 text-white focus:ring-2 focus:ring-blue-500" />
+          </div>
 
-    <!-- Display SubTodos -->
-    <% if (subTodos && subTodos.length> 0) { %>
-      <ul class="space-y-4">
-        <% subTodos.forEach((todo)=> { %>
-          <li class="bg-white p-4 rounded shadow flex justify-between items-center">
-            <span>
-              <%= todo.title %> -
-                <%= todo.createdBy?.name || "Unknown User" %>
+          <% if (user && user._id) { %>
+            <input type="hidden" name="createdBy" value="<%= user._id %>" />
+            <% } else { %>
+              <p class="text-red-500 text-sm">User not found. Please log in to create SubTodos.</p>
+              <% } %>
+                <button type="submit"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200">
+                  ➕ Add SubTodo
+                </button>
+        </form>
+      </section>
+
+      <!-- ✅ Display SubTodos -->
+      <% if (subTodos && subTodos.length> 0) { %>
+        <section class="space-y-4">
+          <% subTodos.forEach((todo)=> { %>
+            <div
+              class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center hover:ring-2 hover:ring-purple-500 transition">
+              <div class="text-gray-100">
+                <p class="text-lg font-medium">
+                  <%= todo.title %>
+                </p>
+                <p class="text-sm text-gray-400">
+                  Created by:
+                  <span class="font-semibold">
+                    <%= todo.createdBy?.username || "Unknown User" %>
+                  </span>
                   (<%= todo.createdBy?.email || "No Email" %>)
-            </span>
-            <div class="space-x-2">
-              <form action="/subtodos/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline;">
-                <button class="text-red-500 hover:underline">Delete</button>
-              </form>
-              <a href="/subtodos/edit/<%= todo._id %>" class="text-blue-500 hover:underline">Edit</a>
+                </p>
+              </div>
+              <div class="flex space-x-3">
+                <form action="/subtask/<%= todo._id %>?_method=DELETE" method="POST">
+                  <button class="text-red-400 hover:text-red-600 font-medium transition">🗑️ Delete</button>
+                </form>
+                <a href="/subtodos/edit/<%= todo._id %>"
+                  class="text-blue-400 hover:text-blue-600 font-medium transition">✏️ Edit</a>
+              </div>
             </div>
-          </li>
-          <% }) %>
-      </ul>
-      <% } else { %>
-        <p class="text-center text-gray-600">No SubTodos found.</p>
-        <% } %>
-  </div>
+            <% }); %>
+        </section>
+        <% } else { %>
+          <p class="text-center text-gray-500 mt-10">🚫 No SubTodos found. Create one above!</p>
+          <% } %>
+    </main>
+
+    <%- include('partials/footer') %>
 
 </body>
 

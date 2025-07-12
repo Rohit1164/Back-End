@@ -5,34 +5,88 @@
   <meta charset="UTF-8" />
   <title>Create Todo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4F46E5',
+            secondary: '#E0E7FF',
+          }
+        }
+      }
+    };
+  </script>
 </head>
 
-<body class="bg-gray-950 ">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100text-gray-900 font-sans">
+
+  <!-- Header -->
   <%- include('partials/header') %>
-    <div class="bg-gray-100 text-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
-      <div class="bg-white p-8 rounded shadow-md w-full max-w-lg">
-        <h1 class="text-2xl font-bold mb-6">Create New Todo</h1>
-        <form action="/task/addTask" method="POST" class="space-y-4">
-          <input type="text" name="title" placeholder="Title" required class="w-full p-2 border rounded" />
 
-          <textarea name="description" placeholder="Description" required class="w-full p-2 border rounded"></textarea>
+    <!-- Main Container -->
+    <div class="min-h-screen flex items-center justify-center py-10 px-4">
+      <div class="bg-white shadow-2xl rounded-xl p-10 w-full max-w-2xl transition-all duration-300">
+        <h2 class="text-3xl font-bold mb-8 text-primary text-center text-gray-900">📝 Create New Task</h2>
 
-          <input type="text" name="priority" placeholder="Priority" required class="w-full p-2 border rounded" />
+        <form action="/task/addTask" method="POST" class="space-y-6">
 
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Title: </label>
+            <div class="flex items-center border border-gray-300 rounded-lg px-3">
+              <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              <input type="text" name="title" required class="w-full p-2 outline-none bg-transparent"
+                placeholder="Enter task title" />
+            </div>
+          </div>
 
-          <input type="date" name="dueDate" class="w-full p-2 border rounded" />
+          <!-- Description -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Description: </label>
+            <textarea name="description" rows="3" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+              placeholder="Enter task details..."></textarea>
+          </div>
 
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">
-            Create
+          <!-- Priority -->
+          <div>
+
+            <div class="flex items-center border border-gray-300 rounded-lg px-3">
+              <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              <input type="text" name="priority" placeholder="Add your Priority" required
+                class="w-full p-2 border rounded border-none" />
+            </div>
+          </div>
+
+          <!-- Due Date -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Due Date</label>
+            <input type="date" name="dueDate"
+              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary" />
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit"
+            class="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300">
+            ➕ Create Task
           </button>
         </form>
 
-        <a href="/task" class="inline-block mt-4 text-blue-600 hover:underline">
-          ← Back to All Todos
-        </a>
+        <!-- Back Link -->
+        <div class="mt-6 text-center">
+          <a href="/task" class="text-sm text-primary hover:underline">← Back to All Tasks</a>
+        </div>
       </div>
     </div>
+
+    <!-- Footer -->
     <%- include('partials/footer') %>
+
 </body>
 
 </html>

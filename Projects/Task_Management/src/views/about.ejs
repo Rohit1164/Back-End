@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>About - Task Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <%- include('partials/header') %>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-16">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">About Task Manager</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Task Manager is a powerful productivity tool that helps you organize tasks, subtasks, and priorities with
+          ease.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border border-blue-100">
+          <h2 class="text-xl font-semibold mb-2 text-blue-600">Organize Tasks</h2>
+          <p class="text-gray-700">Easily create, edit, and categorize your tasks with priorities and due dates.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border border-green-100">
+          <h2 class="text-xl font-semibold mb-2 text-green-600">Manage Subtasks</h2>
+          <p class="text-gray-700">Break down complex tasks into subtasks and monitor progress with completion tracking.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border border-purple-100">
+          <h2 class="text-xl font-semibold mb-2 text-purple-600">Track Your Progress</h2>
+          <p class="text-gray-700">Stay productive by tracking what's done and what's pending with visual indicators.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-16 text-center">
+        <h3 class="text-2xl font-semibold mb-2 text-indigo-800">Built with Modern Tools</h3>
+        <p class="text-gray-600">This app is built using Node.js, Express, MongoDB, EJS, and Tailwind CSS.</p>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+</body>
+
+</html>

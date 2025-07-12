@@ -1,31 +1,46 @@
-<!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<header class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center shadow-md">
-  <!-- Logo / App Title -->
-  <a href="/" class="text-xl font-bold hover:underline">My App</a>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+  };
+</script>
 
-  <!-- Navigation / User Actions -->
-  <% if (locals.user) { %>
-    <div class="flex items-center space-x-4">
-      <span class="hidden sm:inline">Welcome, <%= user.username %> 👋</span>
+<header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 shadow-md">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <a href="/" class="text-2xl font-extrabold tracking-wide hover:opacity-80 transition duration-300">
+      TaskMaster 📝
+    </a>
 
-      <!-- Dashboard or Todos link -->
-      <a href="/task" class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100 transition">
-        Todos
-      </a>
-
-      <!-- Logout form -->
-      <form action="/users/logout" method="DELETE">
-        <button type="submit" class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100 transition">
-          Logout
-        </button>
-      </form>
-    </div>
-    <% } else { %>
+    <!-- Navigation / User Actions  -->
+    <% if (locals.user) { %>
       <div class="flex items-center space-x-4">
-        <a href="/users/login" class="hover:underline">Login</a>
-        <a href="/users/register" class="hover:underline">Register</a>
+        <span class="hidden sm:inline text-lg">Welcome, <%= user.username %> 👋</span>
+
+        <a href="/task"
+          class="bg-white text-blue-600 font-semibold px-4 py-2 rounded-full hover:bg-gray-100 transition duration-300 shadow">
+          🗂️Tasks
+        </a>
+
+        <form action="/users/logout" method="POST">
+          <button type="submit"
+            class="bg-white text-red-500 font-semibold px-4 py-2 rounded-full hover:bg-red-100 transition duration-300 shadow">
+            🚪 Logout
+          </button>
+        </form>
       </div>
-      <% } %>
+      <% } else { %>
+        <div class="flex items-center space-x-4">
+
+          <a href="/users/login"
+            class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-blue-100 transition duration-300 shadow">
+            🔐 Login
+          </a>
+          <a href="/users/register"
+            class="bg-white text-green-600 px-4 py-2 rounded-full font-medium hover:bg-green-100 transition duration-300 shadow">
+            ✍️ Register
+          </a>
+        </div>
+        <% } %>
+  </div>
 </header>

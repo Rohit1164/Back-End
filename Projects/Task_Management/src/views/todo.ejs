@@ -10,40 +10,66 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-950 ">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-white font-sans">
   <%- include('partials/header') %>
-    <div class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center py-10">
-      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
-        <h1 class="text-3xl font-bold text-blue-700 mb-4">
+
+    <div class="flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div
+        class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-3xl p-8 transition-all duration-300 hover:scale-[1.01]">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-extrabold text-blue-700 mb-6 border-b pb-2">
           <%= todo.title %>
         </h1>
 
-        <p class="text-lg mb-2">
-          <strong class="text-gray-600">Description:</strong>
-          <span class="text-gray-800">
+        <!-- Description -->
+        <div class="mb-4">
+          <p class="text-md text-gray-600 mb-1 font-semibold">Description: </p>
+          <p class="text-lg text-gray-800">
             <%= todo.description %>
-          </span>
-        </p>
+          </p>
+        </div>
 
-        <p class="text-lg mb-2">
-          <strong class="text-gray-600">Priority:</strong>
-          <span class="text-gray-800">
+        <!-- Priority -->
+        <div class="mb-4">
+          <p class="text-md text-gray-600 mb-1 font-semibold">Priority: </p>
+          <span class="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full shadow">
             <%= todo.priority %>
           </span>
-        </p>
+        </div>
 
-        <p class="text-lg mb-4">
-          <strong class="text-gray-600">Created By:</strong>
-          <span class="text-gray-800">
-            <%= todo.createdBy.name || 'N/A' %>
-          </span>
-        </p>
+        <!-- Created By -->
+        <div class="mb-8">
+          <p class="text-md text-gray-600 mb-1 font-semibold">Created By: </p>
+          <p class="text-gray-800">
+            <%= todo.createdBy?.username || 'N/A' %>
+          </p>
+        </div>
+        <div class=" flex justify-between">
 
-        <a href="/task" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-          ← Back to All Todos
-        </a>
+          <form action="/task/delete/<%= todo._id %>" method="POST" onsubmit="return confirm('Are you sure?')">
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded ml-2">
+              Delete
+            </button>
+          </form>
+          <!-- Back Button -->
+          <a href="/task"
+            class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200">
+            ←
+            Back to All Todos
+          </a>
+
+          <a href="/task/edit/<%= todo._id %>"
+            class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-1 h-8 rounded">
+            Edit
+          </a>
+        </div>
+
+
       </div>
+
     </div>
+
     <%- include('partials/footer') %>
 </body>
 

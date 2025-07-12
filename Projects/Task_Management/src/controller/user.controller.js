@@ -1,6 +1,5 @@
 import { User } from "../models/Users.models.js";
 import { ApiError } from "../utils/ApiError.js";
-// import { ApiResponse } from "../utils/ApiResponse.js";
 
 const generateAccessAndRefreshToken = async (userID) => {
   try {
@@ -46,56 +45,38 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw new Error("All field are required");
-  }
+
+  if (!email || !password)
+    return res.status(400).json({ message: "All fields are required" });
 
   try {
     const user = await User.findOne({ email });
-
-    if (!user)
-      return res.status(401).json({ message: "Invalid email or password" });
-
-    const isMatch = await user.isPasswordCorrect(password);
-    if (!isMatch)
+    if (!user || !(await user.isPasswordCorrect(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    const { accessToken, refreshToken } = generateAccessAndRefreshToken(
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
       user._id
     );
-    const loggedInUser = await User.findById(user._id).select(
-      "-password -refreshToken"
-    );
 
-    const options = {
-      httpOnly: true,
-      secure: false,
-    };
-
+    // Save to session
     req.session.user = {
       _id: user._id,
       username: user.username,
       email: user.email,
     };
 
-    return res
-      .status(200)
+    const options = { httpOnly: true, secure: false };
+
+    res
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
       .redirect("/task");
-    // .json(
-    //   new ApiResponse(
-    //     200,
-    //     {
-    //       user: loggedInUser,
-    //       accessToken,
-    //       refreshToken,
-    //     },
-    //     "User logged In Successfully"
-    //   )
-    // )
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Login error:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };
 
@@ -111,14 +92,7 @@ export const logout = async (req, res) => {
         .clearCookie("connect.sid")
         .clearCookie("accessToken")
         .clearCookie("refreshToken")
-        .clearCookie("userData")
-        .redirect("/users/login");
-      //   .json(
-      //     new ApiResponse(
-      //       200,
-      //       "User logged out In Successfully"
-      //     )
-      //   );
+        .redirect("/");
     });
   } catch (error) {
     console.error("Logout error:", error);

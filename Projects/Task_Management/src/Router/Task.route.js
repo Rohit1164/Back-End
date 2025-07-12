@@ -2,6 +2,7 @@ import express from "express";
 import {
   createTodo,
   deleteTodo,
+  editTodo,
   getTodo,
   getTodos,
   renderCreateTodoForm,
@@ -11,13 +12,14 @@ import { isAuthenticated } from "../middleware/isAuthentic.middleware.js";
 
 const router = express.Router();
 
-router.get("/add-task", renderCreateTodoForm); // Static
-router.post("/addTask", isAuthenticated, createTodo); // Static
+router.get("/add-task", renderCreateTodoForm);
+router.post("/addTask", isAuthenticated, createTodo);
 
-router.get("/", getTodos); // Static root
+router.get("/", getTodos);
+router.get("/:id", getTodo);
+router.get("/edit/:id", editTodo);
 
-router.get("/:id", getTodo); // Dynamic — must come after static
-router.put("/:id", updateTodo);
-router.delete("/:id", deleteTodo);
+router.post("/update/:id", updateTodo);
+router.post("/delete/:id", deleteTodo);
 
 export default router;

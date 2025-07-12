@@ -73,18 +73,19 @@ export const getTodo = async (req, res) => {
 //Update Todo
 export const updateTodo = async (req, res) => {
   try {
-    const { title, complete } = req.body;
+    const { title, description, complete } = req.body;
 
     const updatedTodo = await Todo.findByIdAndUpdate(
       req.params.id,
-      { title, complete },
+      { title, description, complete },
       { new: true }
     );
 
     if (!updatedTodo)
       return res.status(404).json({ message: "Todo not found" });
 
-    res.status(200).json(updatedTodo);
+    res.status(200).redirect("/task");
+    // json(updatedTodo);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -98,12 +99,17 @@ export const deleteTodo = async (req, res) => {
     if (!deletedTodo)
       return res.status(404).json({ message: "Todo not found" });
 
-    res.status(200).json({ message: "Todo deleted successfully" });
+    res.status(200).redirect("/");
+    // json({ message: "Todo deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+export const editTodo = async (req, res) => {
+  const todo = await Todo.findById(req.params.id);
+  res.render("editTodo", { todo });
+};
 export const renderCreateTodoForm = (req, res) => {
   res.render("createTodo");
 };
